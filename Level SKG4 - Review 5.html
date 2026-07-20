@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Review 5: Unit 9–10</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap');
+
+  :root{
+    --grape:#7c4dff; --grape-dark:#5b2ec9;
+    --sky:#22b8ff;    --sky-dark:#1592d6;
+    --mint:#20cf9a;   --mint-dark:#12a97b;
+    --coral:#ff6b6b;  --coral-dark:#e04b4b;
+    --pink:#ff6fae;   --pink-dark:#e04b91;
+    --orange:#ff9f43; --orange-dark:#e8801f;
+    --teal:#12b5b0;   --teal-dark:#0c8f8b;
+    --violet:#a259ff; --violet-dark:#8231e6;
+    --sun:#ffce3a;
+    --cream:#fdf7ef;
+    --ink:#2f2c56; --ink-soft:#6b6799;
+    --card:#ffffff;
+    --good:#20cf9a; --bad:#ff6b6b;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Nunito',sans-serif;color:var(--ink);
+    background:
+      radial-gradient(circle at 10% 12%, #ffe3f1 0, transparent 26%),
+      radial-gradient(circle at 92% 8%, #dcefff 0, transparent 28%),
+      radial-gradient(circle at 88% 92%, #d9fff0 0, transparent 30%),
+      radial-gradient(circle at 6% 90%, #fff1cc 0, transparent 28%),
+      var(--cream);
+    min-height:100vh;padding:18px 14px 60px;
+  }
+  .wrap{max-width:1180px;margin:0 auto;}
+
+  /* ---------- Header ---------- */
+  .hero{
+    background:linear-gradient(120deg,#7c4dff,#a259ff 55%,#22b8ff);
+    border-radius:28px;padding:22px 26px;color:#fff;position:relative;overflow:hidden;
+    box-shadow:0 12px 0 rgba(92,46,201,.20);margin-bottom:20px;
+  }
+  .hero::after{content:"";position:absolute;right:-30px;top:-30px;width:170px;height:170px;
+    background:radial-gradient(circle,rgba(255,255,255,.22),transparent 70%);}
+  .hero .eyebrow{font-family:'Fredoka';font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    font-size:.8rem;opacity:.9;}
+  .hero h1{font-family:'Fredoka';font-weight:700;font-size:2.4rem;margin:.1em 0 0;line-height:1;letter-spacing:.01em;
+    display:flex;align-items:center;gap:12px;}
+  .hero h1 .star{filter:drop-shadow(0 3px 0 rgba(0,0,0,.15));}
+  .hero .sub{font-weight:700;opacity:.92;margin-top:8px;font-size:1.02rem;}
+  .hero .stars{position:absolute;right:24px;bottom:18px;background:rgba(255,255,255,.2);
+    padding:8px 16px;border-radius:16px;font-family:'Fredoka';font-weight:700;backdrop-filter:blur(4px);
+    display:flex;align-items:center;gap:6px;}
+
+  /* ---------- Tabs ---------- */
+  .tabs{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:20px;}
+  .tab{
+    font-family:'Fredoka';font-weight:700;font-size:.98rem;border:none;cursor:pointer;color:#fff;
+    padding:10px 15px;border-radius:15px;box-shadow:0 5px 0 rgba(0,0,0,.16);position:relative;
+    transition:transform .12s,box-shadow .12s,filter .15s;display:flex;flex-direction:column;line-height:1.15;
+    min-width:74px;
+  }
+  .tab small{font-weight:600;font-size:.68rem;opacity:.9;text-transform:uppercase;letter-spacing:.05em;}
+  .tab:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.16);}
+  .tab.inactive{filter:grayscale(.5) opacity(.62);}
+  .tab .dot{position:absolute;top:-7px;right:-7px;width:22px;height:22px;border-radius:50%;
+    background:var(--sun);color:var(--ink);font-size:.8rem;display:none;align-items:center;justify-content:center;
+    box-shadow:0 2px 0 rgba(0,0,0,.15);}
+  .tab.done .dot{display:flex;}
+  .tab.done .dot::after{content:"★";}
+
+  /* ---------- Card ---------- */
+  .card{background:var(--card);border-radius:30px;padding:32px 42px 30px;border:4px solid #fff;
+    box-shadow:0 12px 0 rgba(47,44,86,.10);position:relative;
+    animation:pop .35s cubic-bezier(.2,1.3,.5,1) both;}
+  @keyframes pop{from{opacity:0;transform:scale(.97) translateY(8px);}to{opacity:1;transform:none;}}
+
+  .card-head{display:flex;align-items:center;gap:14px;margin-bottom:4px;}
+  .badge{font-family:'Fredoka';font-weight:700;color:#fff;min-width:56px;height:52px;padding:0 12px;
+    border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    box-shadow:0 4px 0 rgba(0,0,0,.18);line-height:1;}
+  .badge small{font-size:.6rem;font-weight:700;letter-spacing:.08em;opacity:.9;}
+  .badge b{font-size:1.5rem;}
+  .part-title{font-family:'Fredoka';font-weight:700;font-size:1.3rem;line-height:1.1;}
+  .directions{color:var(--ink-soft);font-weight:600;margin-top:3px;font-size:1rem;}
+
+  .progress{display:flex;gap:6px;margin:18px 0 20px;flex-wrap:wrap;}
+  .pip{width:32px;height:10px;border-radius:20px;background:#ece9f7;cursor:pointer;transition:.15s;}
+  .pip:hover{transform:scaleY(1.5);}
+  .pip.current{background:var(--grape);}
+  .pip.correct{background:var(--good);}
+  .pip.wrong{background:var(--bad);}
+
+  .qwrap{min-height:180px;}
+  .qcount{font-family:'Fredoka';font-weight:700;color:var(--grape);font-size:1rem;margin-bottom:10px;}
+  .sentence{font-size:1.5rem;font-weight:700;line-height:1.85;}
+
+  /* Blanks */
+  .blank{display:inline-block;border:none;border-bottom:4px dashed var(--sky);background:#f2fbff;
+    border-radius:8px 8px 0 0;font-family:'Nunito';font-weight:800;font-size:1.35rem;color:var(--grape-dark);
+    text-align:center;min-width:130px;padding:3px 12px;margin:0 4px;outline:none;transition:.15s;}
+  .blank:focus{border-bottom-color:var(--grape);background:#f2ecff;}
+  .blank.ok{border-bottom-color:var(--good);background:#e7fbf4;color:#0f9c74;}
+  .blank.no{border-bottom-color:var(--bad);background:#fff0f0;color:#d84343;}
+
+  /* Slot for tile-drop answers */
+  .slot{display:inline-flex;align-items:center;justify-content:center;gap:4px;min-width:120px;height:46px;
+    border:3px dashed var(--sky);border-radius:14px;background:#f2fbff;margin:0 4px;padding:0 8px;
+    vertical-align:middle;cursor:pointer;font-weight:800;font-size:1.15rem;color:var(--grape-dark);transition:.15s;}
+  .slot.empty{color:#b9c9d6;}
+  .slot.ok{border-color:var(--good);border-style:solid;background:#e7fbf4;color:#0f9c74;}
+  .slot.no{border-color:var(--bad);border-style:solid;background:#fff0f0;color:#d84343;}
+
+  .cue{margin-top:12px;font-weight:800;color:var(--ink-soft);font-size:1.05rem;}
+  .cue b{color:var(--grape);}
+
+  /* Word bank chips */
+  .bank{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 18px;padding:14px;border-radius:20px;
+    background:linear-gradient(#fbf8ff,#f3edff);border:3px dashed #ded1ff;}
+  .bank-label{width:100%;font-family:'Fredoka';font-weight:700;color:var(--grape);font-size:1rem;
+    text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
+  .chip{font-family:'Fredoka';font-weight:600;font-size:1.28rem;background:#fff;border:3px solid #e5ddff;
+    color:var(--grape-dark);padding:11px 20px;border-radius:15px;cursor:pointer;box-shadow:0 4px 0 #e5ddff;
+    transition:transform .1s,box-shadow .1s,background .15s;user-select:none;}
+  .chip:active{transform:translateY(3px);box-shadow:0 1px 0 #e5ddff;}
+  .chip.used{opacity:.32;pointer-events:none;text-decoration:line-through;}
+  .chip.picked{background:var(--grape);color:#fff;border-color:var(--grape-dark);box-shadow:0 4px 0 var(--grape-dark);}
+
+  /* Letter tiles (click to bring down) */
+  .tiletray{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 4px;min-height:56px;}
+  .tile{min-width:46px;height:52px;padding:0 10px;border-radius:13px;font-family:'Fredoka';font-weight:700;
+    font-size:1.4rem;background:linear-gradient(#fff,#fff2cf);border:3px solid var(--sun);color:#b5760a;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 0 #f0c53a;
+    transition:transform .1s,box-shadow .1s,opacity .15s;user-select:none;text-transform:lowercase;}
+  .tile:active{transform:translateY(3px);box-shadow:0 1px 0 #f0c53a;}
+  .tile.used{opacity:.28;pointer-events:none;}
+  .traylabel{width:100%;font-family:'Fredoka';font-weight:700;color:#b5760a;font-size:.82rem;
+    text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;}
+
+  /* Answer build strip */
+  .buildstrip{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:14px 0 6px;padding:12px 14px;
+    border-radius:16px;background:#f6f9ff;border:3px dashed #c9d8ff;min-height:64px;}
+  .buildstrip .placeholder{color:#a9b6d8;font-weight:700;}
+  .built{min-width:44px;height:48px;padding:0 12px;border-radius:12px;font-family:'Fredoka';font-weight:700;
+    font-size:1.3rem;background:var(--grape);color:#fff;display:flex;align-items:center;justify-content:center;
+    cursor:pointer;box-shadow:0 4px 0 var(--grape-dark);text-transform:lowercase;}
+  .built:hover{background:var(--coral);box-shadow:0 4px 0 var(--coral-dark);}
+
+  /* Choices */
+  .choices{display:flex;flex-direction:column;gap:12px;margin-top:16px;}
+  .choice{text-align:left;font-family:'Nunito';font-weight:700;font-size:1.18rem;background:#fff;
+    border:3px solid #e9e6f7;border-radius:18px;padding:14px 18px;cursor:pointer;color:var(--ink);
+    display:flex;align-items:center;gap:14px;box-shadow:0 4px 0 #e9e6f7;transition:.12s;}
+  .choice:active{transform:translateY(3px);box-shadow:0 1px 0 #e9e6f7;}
+  .choice .key{width:36px;height:36px;flex:none;border-radius:10px;background:var(--grape);color:#fff;
+    font-family:'Fredoka';font-weight:700;display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+  .choice.sel{border-color:var(--grape);box-shadow:0 4px 0 var(--grape);}
+  .choice.ok{border-color:var(--good);box-shadow:0 4px 0 var(--good);background:#eafcf6;}
+  .choice.ok .key{background:var(--good);}
+  .choice.no{border-color:var(--bad);box-shadow:0 4px 0 var(--bad);background:#fff2f2;}
+  .choice.no .key{background:var(--bad);}
+
+  /* Matching (warm-up) — two-column click-to-pair */
+  .match-wrap{margin-top:8px;}
+  .match-progress{font-family:'Fredoka';font-weight:600;color:var(--ink-soft);font-size:1.05rem;
+    margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+  .match-progress .bar{flex:1;height:12px;background:#ece9f7;border-radius:20px;overflow:hidden;max-width:280px;}
+  .match-progress .bar span{display:block;height:100%;background:linear-gradient(90deg,var(--mint),var(--sky));
+    border-radius:20px;transition:width .3s;}
+  .match-help{color:var(--ink-soft);font-weight:700;font-size:1rem;margin:0 0 16px;}
+  .match2{display:grid;grid-template-columns:1fr 1fr;gap:14px 22px;align-items:start;}
+  .mcol{display:flex;flex-direction:column;gap:11px;}
+  .mcol-head{font-family:'Fredoka';font-weight:600;color:#fff;font-size:.95rem;text-transform:uppercase;
+    letter-spacing:.08em;text-align:center;padding:9px;border-radius:13px;margin-bottom:2px;}
+  .mcol-head.act{background:var(--violet);}
+  .mcol-head.end{background:var(--teal);}
+  .mcard{font-family:'Fredoka';font-weight:600;font-size:1.35rem;border:3px solid #e9e6f7;background:#fff;
+    border-radius:16px;padding:15px 16px;cursor:pointer;color:var(--ink);box-shadow:0 5px 0 #e9e6f7;
+    transition:transform .1s,box-shadow .12s,background .15s,border-color .15s,color .15s;text-align:center;
+    position:relative;}
+  .mcard:active{transform:translateY(3px);box-shadow:0 1px 0 #e9e6f7;}
+  .mcard.sel{border-color:var(--orange);box-shadow:0 5px 0 var(--orange-dark);background:#fff6e6;
+    transform:translateY(-2px) scale(1.02);}
+  .mcard.wrongflash{border-color:var(--bad);background:#fff0f0;animation:shake .3s;}
+  .mcard.matched{cursor:default;color:#fff;font-weight:600;}
+  .mcard.matched::after{content:"✓";position:absolute;top:-9px;right:-9px;width:24px;height:24px;
+    background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;
+    color:var(--ink);box-shadow:0 2px 0 rgba(0,0,0,.12);}
+  /* 6 pair colors */
+  .mcard.c0{background:var(--grape);border-color:var(--grape-dark);box-shadow:0 5px 0 var(--grape-dark);}
+  .mcard.c1{background:var(--sky);border-color:var(--sky-dark);box-shadow:0 5px 0 var(--sky-dark);}
+  .mcard.c2{background:var(--mint);border-color:var(--mint-dark);box-shadow:0 5px 0 var(--mint-dark);}
+  .mcard.c3{background:var(--coral);border-color:var(--coral-dark);box-shadow:0 5px 0 var(--coral-dark);}
+  .mcard.c4{background:var(--pink);border-color:var(--pink-dark);box-shadow:0 5px 0 var(--pink-dark);}
+  .mcard.c5{background:var(--orange);border-color:var(--orange-dark);box-shadow:0 5px 0 var(--orange-dark);}
+  .mcard.c0::after{color:var(--grape-dark);} .mcard.c1::after{color:var(--sky-dark);}
+  .mcard.c2::after{color:var(--mint-dark);} .mcard.c3::after{color:var(--coral-dark);}
+  .mcard.c4::after{color:var(--pink-dark);} .mcard.c5::after{color:var(--orange-dark);}
+  @keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+  /* Speaking */
+  .sp-q{font-size:1.5rem;font-weight:800;line-height:1.4;margin-bottom:4px;color:var(--grape-dark);}
+  .sp-frame{background:#f2fbff;border:3px solid var(--sky);border-radius:18px;padding:16px 18px;
+    font-size:1.35rem;font-weight:700;line-height:1.9;margin:14px 0;color:var(--ink);}
+  .sp-frame .fill{display:inline-block;min-width:110px;border-bottom:4px dashed var(--sky);
+    color:var(--grape-dark);font-weight:800;text-align:center;padding:0 8px;cursor:pointer;
+    border-radius:8px 8px 0 0;transition:.15s;}
+  .sp-frame .fill:hover{background:#eaf6ff;}
+  .sp-frame .fill.filled{border-bottom-color:var(--mint);color:var(--mint-dark);}
+  .sp-frame .fill.active{background:#fff3d6;border-bottom-color:var(--orange);box-shadow:0 0 0 3px #ffe6ad;}
+  .blank-role{color:var(--pink-dark);font-weight:800;text-transform:none;letter-spacing:0;}
+  .idea-label{font-family:'Fredoka';font-weight:700;color:var(--pink-dark);font-size:1rem;
+    text-transform:uppercase;letter-spacing:.06em;margin:10px 0 10px;}
+  .ideas{display:flex;gap:9px;flex-wrap:wrap;}
+  .idea{font-family:'Fredoka';font-weight:600;font-size:1.22rem;background:#fff;border:3px solid var(--pink);
+    color:var(--pink-dark);padding:10px 20px;border-radius:15px;cursor:pointer;box-shadow:0 4px 0 var(--pink);
+    transition:.1s;user-select:none;}
+  .idea:active{transform:translateY(3px);box-shadow:0 1px 0 var(--pink);}
+  .idea.on{background:var(--pink);color:#fff;}
+  .sp-sample{margin-top:14px;background:#fff8e6;border:3px dashed var(--sun);border-radius:16px;
+    padding:14px 16px;font-weight:700;color:#a97b16;display:none;font-size:1.1rem;}
+  .sp-sample.show{display:block;}
+  .sp-tip{margin-top:10px;color:var(--ink-soft);font-weight:700;font-size:.98rem;}
+
+  /* Feedback + hint */
+  .feedback{margin-top:18px;border-radius:18px;padding:14px 18px;font-weight:800;font-size:1.14rem;
+    font-family:'Fredoka';display:none;align-items:center;gap:10px;animation:pop .3s both;}
+  .feedback.show{display:flex;}
+  .feedback.good{background:#e7fbf4;color:#0f9c74;}
+  .feedback.bad{background:#fff0f0;color:#d84343;}
+  .feedback .ans{font-family:'Nunito';font-weight:800;}
+  .hintbox{margin-top:16px;background:#fff8e6;border:3px dashed var(--sun);border-radius:18px;
+    padding:14px 18px;font-weight:700;color:#a97b16;display:none;animation:pop .3s both;font-size:1.05rem;}
+  .hintbox.show{display:block;}
+  .hintbox b{color:#8a6410;}
+
+  /* Controls */
+  .controls{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;align-items:center;}
+  .btn{font-family:'Fredoka';font-weight:700;font-size:1.08rem;border:none;cursor:pointer;padding:13px 20px;
+    border-radius:16px;color:#fff;box-shadow:0 5px 0 rgba(0,0,0,.16);transition:.1s;display:flex;align-items:center;gap:8px;}
+  .btn:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.16);}
+  .btn:disabled{filter:grayscale(.6) opacity(.42);pointer-events:none;}
+  .btn.ghost{background:#eee9fb;color:var(--grape-dark);box-shadow:0 5px 0 #d9d0f2;}
+  .btn.check{background:var(--mint);box-shadow:0 5px 0 var(--mint-dark);}
+  .btn.next{background:var(--grape);box-shadow:0 5px 0 var(--grape-dark);}
+  .btn.hint{background:var(--sun);color:#8a6410;box-shadow:0 5px 0 #e0af1f;}
+  .btn.clear{background:#ffd9d9;color:var(--coral-dark);box-shadow:0 5px 0 #f2b5b5;}
+  .spacer{flex:1;}
+  .foot{display:flex;justify-content:center;margin-top:20px;}
+  .score{font-family:'Fredoka';font-weight:700;color:var(--ink-soft);font-size:1rem;background:#fff;
+    padding:8px 18px;border-radius:16px;box-shadow:0 4px 0 rgba(47,44,86,.06);}
+
+  .confetti{position:fixed;top:-20px;width:12px;height:16px;z-index:999;pointer-events:none;border-radius:3px;}
+
+  @media(max-width:600px){
+    .hero h1{font-size:1.7rem;} .hero .stars{position:static;margin-top:12px;display:inline-flex;}
+    .sentence,.sp-frame{font-size:1.2rem;} .sp-q{font-size:1.25rem;}
+    .card{padding:20px 18px;}
+    .match2{gap:10px 10px;} .mcard{font-size:1.05rem;padding:12px 8px;}
+    .chip{font-size:1.08rem;padding:9px 14px;} .idea{font-size:1.05rem;padding:9px 14px;}
+    .btn{font-size:1rem;padding:12px 15px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="eyebrow">Grammar &amp; Vocabulary</div>
+    <h1><span class="star">🌟</span> Review 5: Unit 9–10</h1>
+    <div class="sub">I Love My Town &nbsp;•&nbsp; Yesterday and Long Ago</div>
+    <div class="stars" id="score">⭐ <span>0</span></div>
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+  <div class="card" id="card"></div>
+
+  <div class="foot"><div class="score" id="partScore">—</div></div>
+</div>
+
+<script>
+/* =========================================================================
+   EDIT EXERCISES HERE.
+   part.type:
+     "match"    warm-up matching. items: single item {pairs:[["café","drink coffee"],...]}
+     "bank"     word-bank fill-in. part.bank=[...]; item:{text:"... ___ ...",answer:"café"}
+     "tiles"    click letters/words to build the answer.
+                item:{text:"Can you ___ ...", answer:"climb", tiles:"b l i m c"}  (space-separated)
+                For word-order, make tiles the words: tiles:"center bikes past sports"
+                and answer the full phrase; set item.mode:"phrase" to join with spaces.
+     "slots"    pick words from a shared bank into ordered slots inside a sentence.
+                part.bank2=[...]; item:{text:"She ___ past the sports ___ ...", answers:["bikes","center"]}
+     "blank"    free-type. item:{text:"I ___ ...", answers:["played"], cue:"(play)"}
+     "choice"   A/B. item:{text:"...", options:["..","..""], answer:0}
+     "speak"    guided speaking. item:{q,frame(with ___),ideas:[...],sample}
+   Optional per item: hint:"...". Fallback: part.hint.
+   ========================================================================= */
+
+const DATA = [
+  /* -------- PART 1 : places vocab (word bank) -------- */
+  {
+    n:1, tag:"Vocabulary", title:"My Town", color:0, type:"bank",
+    dir:"Read the clue. Pick the correct place.",
+    bank:["café","hospital","market","movie theater","parking lot","sports center","supermarket","skyscraper","bus stop"],
+    items:[
+      {text:"You can swim and play basketball here. → ___", answer:"sports center",
+        hint:"Swim + basketball = a place for sports. Two words, starts with 'sports…'"},
+      {text:"Doctors work here to make sick people well. → ___", answer:"hospital",
+        hint:"Where do you go when you are sick and need a doctor?"},
+      {text:"There are movies here. → ___", answer:"movie theater",
+        hint:"You watch films on a big screen here. Two words: movie + t…"},
+      {text:"You can sit and drink hot chocolate here. → ___", answer:"café",
+        hint:"A small place for drinks like coffee, tea, or hot chocolate."},
+      {text:"This is a big store. You can buy food here. → ___", answer:"supermarket",
+        hint:"A BIG food store — bigger than a market. Starts with 'super…'"},
+      {text:"It is a very tall building in a big city. → ___", answer:"skyscraper",
+        hint:"So tall it almost touches the sky! It 'scrapes' the sky → sky + s…"},
+      {text:"You can buy fresh fruit and vegetables here. → ___", answer:"market",
+        hint:"An open place with many small stalls selling food. Not as big as a supermarket."},
+      {text:"You leave your car here when you go shopping. → ___", answer:"parking lot",
+        hint:"A big open space just for CARS. Two words: parking + l…"},
+      {text:"You stand here and wait for the number 12 bus. → ___", answer:"bus stop",
+        hint:"The place where the bus picks people up. Two words: bus + s…"},
+    ]
+  },
+
+  /* -------- PART 2 : unscramble (click tiles) -------- */
+  {
+    n:2, tag:"Spelling", title:"Build the Word", color:1, type:"tiles",
+    dir:"Tap the letters to spell the missing word.",
+    items:[
+      {text:"Can you ___ that tree? It's very tall!", answer:"climb", tiles:"b l i m c",
+        hint:"To go UP the tree using your hands and feet. Starts with 'cl…'"},
+      {text:"Do you want to go out or ___ home?", answer:"stay", tiles:"y a s t",
+        hint:"The opposite of 'go out' — to NOT leave home. 4 letters: s-t-a-y."},
+      {text:"I don't live far, so I ___ to school every day.", answer:"bike", tiles:"k b e i",
+        hint:"You ride this with two wheels and pedals. Verb form: to 'b…'"},
+      {text:"I love funny videos. I ___ a lot.", answer:"laugh", tiles:"l u g h a",
+        hint:"What you do when something is very funny: 'ha ha ha!'"},
+      {text:"She's thirsty. She ___ some water.", answer:"needs", tiles:"d e s n e",
+        hint:"'She' + verb → add -s. To 'need' something = to want/must have it."},
+      {text:"We watched the boats ___ on the sea.", answer:"sail", tiles:"a i s l",
+        hint:"Boats do this on the water using the wind. 4 letters: s-a-i-l."},
+      {text:"Every morning I ___ to school with my sister.", answer:"walk", tiles:"a l w k",
+        hint:"To go on foot (not by bike or bus). 4 letters: w-a-l-k."},
+      {text:"The baby began to ___ because she was hungry.", answer:"cry", tiles:"r y c",
+        hint:"What you do with tears when you are sad. 3 letters: c-r-y."},
+      {text:"A ___ is a very tall building in the city.", answer:"skyscraper", tiles:"s k y s c r a p e r",
+        hint:"So tall it seems to touch the sky! sky + scraper."},
+      {text:"Doctors and nurses work at the ___.", answer:"hospital", tiles:"h o s p i t a l",
+        hint:"The place you go when you are sick. h-o-s-p-i-t-a-l."},
+    ]
+  },
+
+  /* -------- PART 3 : was/were + past choices (A/B) -------- */
+  {
+    n:3, tag:"Grammar", title:"Pick the Answer", color:2, type:"choice",
+    dir:"There was / were … & simple past. Choose A or B.",
+    items:[
+      {text:"Was there a market here ten years ago?", options:["Yes, there was.","It's a parking lot."], answer:0,
+        hint:"The question uses 'Was there…?' → answer the same way: 'Yes, there was.'"},
+      {text:"Were there a lot of people here then?", options:["Yes, there are a lot of people.","No, there weren't many."], answer:1,
+        hint:"The question is about the PAST ('Were there…?'). Which answer stays in the past?"},
+      {text:"In those days, there was a big pool in the park.", options:["Was there? Wow!","I love swimming there."], answer:0,
+        hint:"You are surprised by past news. Reply with a short past question: 'Was there?'"},
+      {text:"Did the ancient Maya people have horses?", options:["No, they didn't.","Yes, they don't."], answer:0,
+        hint:"'Did…?' questions take 'did' / 'didn't' in the answer, not 'don't'."},
+      {text:"The children weren't on the playground.", options:["What are they playing?","Really? Were they all in class?"], answer:1,
+        hint:"They were NOT on the playground, so where WERE they? Pick the past-tense reply."},
+      {text:"There was a pencil case here five minutes ago.", options:["Yes, there were.","Where is it now?"], answer:1,
+        hint:"It was here before but maybe gone now. Which reply makes sense — and is grammatical?"},
+      {text:"Were there any stores in Shenzhen long ago?", options:["No, there weren't. It was small.","Yes, there are many now."], answer:0,
+        hint:"'Were there…?' asks about the PAST. Answer with 'there weren't', not 'there are'."},
+    ]
+  },
+
+  /* -------- PART 4 : simple past complete (type) -------- */
+  {
+    n:4, tag:"Grammar", title:"Past Tense", color:3, type:"blank",
+    dir:"Write the verb in the simple past.",
+    items:[
+      {text:"I ___ a new game with my friend last night.", answers:["played"], cue:"(play)",
+        hint:"Regular verb + last night = past. play → add -ed → play__."},
+      {text:"I tried that game, but I ___ it.", answers:["didn't like"], cue:"(not like)",
+        hint:"Negative past = didn't + base verb. 'not like' → didn't ____ ."},
+      {text:"He ___ a picture of some giraffes in art class.", answers:["painted"], cue:"(paint)",
+        hint:"Regular verb: paint → add -ed → paint__."},
+      {text:"His grandfather ___ computers until he was 72!", answers:["didn't use"], cue:"(not use)",
+        hint:"Negative past = didn't + base verb. 'not use' → didn't ____ ."},
+      {text:"There ___ any buses, so she ___ home.", answers:["wasn't","walked"], cue:"(not be, walk)",
+        hint:"'be' (negative, singular) → wasn't. 'walk' → walked. Two blanks!"},
+      {text:"We ___ a sad movie, but I ___.", answers:["watched","didn't cry"], cue:"(watch, not cry)",
+        hint:"'watch' → watched. 'not cry' → didn't cry (didn't + base verb)."},
+    ]
+  },
+
+  /* -------- PART 5 : WARM-UP matching of phrases -------- */
+  {
+    n:5, tag:"Warm-up", title:"Match the Phrases", color:6, type:"match",
+    dir:"Tap an action, then tap its ending to make a phrase!",
+    items:[
+      {pairs:[
+        ["bike","to school"],
+        ["climb","a tree"],
+        ["wait","for the bus"],
+        ["need","water"],
+        ["stay","home"],
+        ["walk","across the street"],
+      ], hint:"Say each full phrase out loud: 'bike to school', 'climb a tree'… The words that sound natural together are the match."}
+    ]
+  },
+
+  /* -------- PART 6 : two words -> pick from a bank into slots -------- */
+  {
+    n:6, tag:"Vocabulary", title:"Two Words", color:4, type:"slots",
+    dir:"Tap two words from the box to finish each sentence.",
+    bank2:["bikes","center","wait","stop","cry","climbed","café","needed","walk","school"],
+    items:[
+      {text:"She ___ past the sports ___ on her way to school.", answers:["bikes","center"],
+        hint:"1st blank: how she travels (she + verb + s). 2nd blank: 'sports ____' is a place."},
+      {text:"You must ___ for the number 12 bus at the bus ___.", answers:["wait","stop"],
+        hint:"1st blank: what you do until the bus comes. 2nd blank: 'bus ____' is where the bus stops."},
+      {text:"He didn't ___ when he ___ the tree and hurt his arm.", answers:["cry","climbed"],
+        hint:"1st blank: base verb after 'didn't'. 2nd blank: past tense of 'climb' (add -ed)."},
+      {text:"They stopped at the ___ because they ___ water.", answers:["café","needed"],
+        hint:"1st blank: a place for drinks. 2nd blank: past tense of 'need' (add -ed)."},
+    ]
+  },
+
+  /* -------- PART 7 : NEW vocab part -------- */
+  {
+    n:7, tag:"Vocabulary", title:"Which Word?", color:7, type:"choice",
+    dir:"Choose the word that fits the sentence.",
+    items:[
+      {text:"An ___ digs in the ground to learn about the past.", options:["archaeologist","architect"], answer:0,
+        hint:"Studies the PAST by digging up old things. An 'architect' designs buildings — not this."},
+      {text:"Cars stop and park in the big ___.", options:["parking lot","bus stop"], answer:0,
+        hint:"CARS park here (not buses). The clue word is 'park'."},
+      {text:"They found old ___ of a city under the sand.", options:["remains","machines"], answer:0,
+        hint:"Old, broken pieces left from long ago = 'remains'."},
+      {text:"You can buy shoes and clothes at the ___.", options:["shopping center","hospital"], answer:0,
+        hint:"A place with many stores for shopping. A hospital is for sick people."},
+      {text:"Factories use big ___ to make cell phones.", options:["machines","skyscrapers"], answer:0,
+        hint:"Factories use these to build things. A skyscraper is a tall building."},
+      {text:"Long ago, life was different. Things ___ a lot.", options:["changed","climbed"], answer:0,
+        hint:"'became different' = past of 'change'. 'climbed' means going up something."},
+    ]
+  },
+
+  /* -------- PART 8 : NEW grammar part -------- */
+  {
+    n:8, tag:"Grammar", title:"Make a Question", color:5, type:"bank",
+    dir:"Choose the correct question word to start each sentence.",
+    bank:["Was","Were","Did"],
+    items:[
+      {text:"___ there a zoo here long ago?", answer:"Was",
+        hint:"'there ___ a zoo' — ONE zoo (singular) → Was."},
+      {text:"___ there any stores in the old town?", answer:"Were",
+        hint:"'there ___ any stores' — MANY stores (plural) → Were."},
+      {text:"___ the Maya people live in Mexico?", answer:"Did",
+        hint:"There's an action verb 'live' after → use Did (Did + subject + verb)."},
+      {text:"___ Sam at the party last night?", answer:"Was",
+        hint:"'___ Sam at…' — one person, no action verb → Was."},
+      {text:"___ they use electricity a long time ago?", answer:"Did",
+        hint:"Action verb 'use' follows → Did (Did they use…?)."},
+      {text:"___ the children in class yesterday?", answer:"Were",
+        hint:"'children' = plural, no action verb → Were."},
+    ]
+  },
+
+  /* -------- PART 9 : GUIDED SPEAKING --------
+     Each blank has its OWN idea list (blanks[]), so the words already fit the
+     grammar of that blank (singular vs plural, base vs past). No auto -s guessing. */
+  {
+    n:9, tag:"Speaking", title:"Let's Talk!", color:8, type:"speak",
+    dir:"Read the question. Tap an idea for each blank. Then say it out loud!",
+    items:[
+      {
+        q:"What is your town like? What places are there?",
+        parts:["In my town, there is a ", ". There is also a ", ". I like the ", " best!"],
+        blanks:[
+          {label:"place", ideas:["café","supermarket","market","hospital","movie theater","park","school","library"]},
+          {label:"place", ideas:["sports center","movie theater","parking lot","market","café","bus stop","shopping center","zoo"]},
+          {label:"place", ideas:["sports center","café","movie theater","supermarket","market","park","library","shopping center"]},
+        ],
+        sample:"In my town, there is a supermarket. There is also a café. I like the sports center best!",
+        hint:"'There is a ___' takes ONE place (singular). Pick a place for each blank."
+      },
+      {
+        q:"What did you do yesterday?",
+        parts:["Yesterday, I ", ". I also ", ". I enjoyed it a lot!"],
+        blanks:[
+          {label:"past action", ideas:["played a game","walked to school","watched a movie","climbed a tree","read a book","visited my grandma","played soccer","went shopping"]},
+          {label:"past action", ideas:["biked to school","laughed a lot","played soccer","watched TV","helped my mom","ate ice cream","drew a picture","sang a song"]},
+        ],
+        sample:"Yesterday, I walked to school. I also played a game. I enjoyed it a lot!",
+        hint:"These are PAST actions (walked, played, watched). Read the whole sentence out loud."
+      },
+      {
+        q:"How was your town different a long time ago?",
+        parts:["Long ago, there was a small ", ". There weren't any ", ". Now there are many ", "."],
+        blanks:[
+          {label:"one place", ideas:["market","café","shop","school","farm","house","road","village"]},
+          {label:"many (plural)", ideas:["skyscrapers","stores","factories","cars","buses","supermarkets","tall buildings","shopping centers"]},
+          {label:"many (plural)", ideas:["big buildings","shops","skyscrapers","cars","stores","people","factories","parks"]},
+        ],
+        sample:"Long ago, there was a small market. There weren't any skyscrapers. Now there are many big buildings.",
+        hint:"Blank 1 = ONE place (a small ___). Blanks 2 & 3 need PLURAL words (skyscrapers, stores…)."
+      },
+      {
+        q:"What did you NOT do yesterday? Say two things.",
+        parts:["Yesterday, I didn't ", ". I didn't ", " either. But I ", "!"],
+        blanks:[
+          {label:"base verb", ideas:["cry","sail","climb trees","wait for the bus","do my homework","clean my room","cook dinner","read"]},
+          {label:"base verb", ideas:["stay home","walk to school","watch TV","bike to school","play outside","wash the dishes","study","run"]},
+          {label:"past action", ideas:["laughed a lot","played a game","had fun","watched a movie","read a book","helped my friend","ate a snack","relaxed"]},
+        ],
+        sample:"Yesterday, I didn't cry. I didn't sail either. But I laughed a lot!",
+        hint:"After 'didn't' use the BASE verb (didn't cry, didn't sail). The last blank is positive → PAST verb."
+      },
+    ]
+  },
+];
+
+/* ============================ ENGINE ============================ */
+const COLORS=[
+  {bg:"var(--grape)",dk:"var(--grape-dark)"},
+  {bg:"var(--sky)",dk:"var(--sky-dark)"},
+  {bg:"var(--mint)",dk:"var(--mint-dark)"},
+  {bg:"var(--coral)",dk:"var(--coral-dark)"},
+  {bg:"var(--pink)",dk:"var(--pink-dark)"},
+  {bg:"var(--orange)",dk:"var(--orange-dark)"},
+  {bg:"var(--teal)",dk:"var(--teal-dark)"},
+  {bg:"var(--violet)",dk:"var(--violet-dark)"},
+  {bg:"var(--grape)",dk:"var(--grape-dark)"},
+];
+
+const state = DATA.map(p => p.items.map(()=>({
+  picked:null, val:[], slots:[], built:[], matched:[], result:null, revealed:false, ideasOn:[]
+})));
+let cur = {p:0, q:0};
+
+const $ = s => document.querySelector(s);
+const norm = s => (s||"").toLowerCase().trim().replace(/[.,!?"']/g,"").replace(/\s+/g," ");
+
+function buildTabs(){
+  const t=$("#tabs"); t.innerHTML="";
+  DATA.forEach((p,i)=>{
+    const b=document.createElement("button");
+    b.className="tab"+(i===cur.p?"":" inactive");
+    b.style.background=COLORS[p.color].bg;
+    b.style.boxShadow="0 5px 0 "+COLORS[p.color].dk;
+    b.innerHTML=`<small>${p.tag}</small><span>Part ${p.n}</span><span class="dot"></span>`;
+    b.onclick=()=>{cur={p:i,q:0};render();};
+    t.appendChild(b);
+  });
+  refreshTabDone();
+}
+function refreshTabDone(){
+  document.querySelectorAll(".tab").forEach((b,i)=>{
+    const p=DATA[i];
+    let done;
+    if(p.type==="speak") done=false; // speaking is open practice, never "wrong"
+    else if(p.type==="match") done=state[i][0].result==="correct";
+    else done=state[i].every(x=>x.result==="correct");
+    b.classList.toggle("done",done);
+    b.classList.toggle("inactive",i!==cur.p);
+  });
+}
+
+function render(){
+  buildTabs();
+  const part=DATA[cur.p], item=part.items[cur.q], st=state[cur.p][cur.q];
+  const col=COLORS[part.color];
+
+  // bank chips (bank / slots)
+  let bankHTML="";
+  if(part.type==="bank"){
+    bankHTML=`<div class="bank"><div class="bank-label">Word Bank</div>`+part.bank.map(w=>{
+      const usedElse=state[cur.p].some((s,qi)=>qi!==cur.q && s.picked===w);
+      return `<button class="chip${st.picked===w?' picked':''}${usedElse&&part.bank.length<=state[cur.p].length?' ':''}" data-w="${w}">${w}</button>`;
+    }).join("")+`</div>`;
+  }
+  if(part.type==="slots"){
+    bankHTML=`<div class="bank"><div class="bank-label">Word Box — tap to place</div>`+part.bank2.map(w=>{
+      const usedHere=st.slots.includes(w);
+      return `<button class="chip${usedHere?' used':''}" data-w="${w}">${w}</button>`;
+    }).join("")+`</div>`;
+  }
+
+  const showCheck = part.type!=="speak";
+  $("#card").innerHTML=`
+    <div class="card-head">
+      <div class="badge" style="background:${col.bg}"><small>PART</small><b>${part.n}</b></div>
+      <div>
+        <div class="part-title">${part.title}</div>
+        <div class="directions">${part.dir}</div>
+      </div>
+    </div>
+    <div class="progress">${part.items.map((_,i)=>{
+      const r=state[cur.p][i].result;
+      return `<div class="pip${i===cur.q?' current':''}${r==='correct'?' correct':''}${r==='wrong'?' wrong':''}" data-q="${i}"></div>`;
+    }).join("")}</div>
+    ${bankHTML}
+    <div class="qwrap">
+      <div class="qcount">${part.type==="match"?"Match all the pairs":"Question "+(cur.q+1)+" of "+part.items.length}</div>
+      <div id="qbody"></div>
+    </div>
+    <div class="feedback" id="fb"></div>
+    <div class="hintbox" id="hb"></div>
+    <div class="controls">
+      <button class="btn ghost" id="prev">◀ Back</button>
+      <button class="btn hint" id="hintBtn">💡 Hint</button>
+      ${(part.type==="tiles"||part.type==="slots")?'<button class="btn clear" id="clearBtn">↺ Clear</button>':''}
+      <div class="spacer"></div>
+      ${showCheck?'<button class="btn check" id="check">✓ Check</button>':'<button class="btn hint" id="sampleBtn">👀 Show Sample</button>'}
+      <button class="btn next" id="next">Next ▶</button>
+    </div>`;
+
+  renderBody(part,item,st,col);
+
+  // chip wiring
+  if(part.type==="bank"){
+    $("#qbody").parentElement.parentElement.querySelectorAll(".chip").forEach(ch=>{
+      ch.onclick=()=>{st.picked=(st.picked===ch.dataset.w)?null:ch.dataset.w; st.result=null; render();};
+    });
+  }
+  if(part.type==="slots"){
+    document.querySelectorAll(".bank .chip").forEach(ch=>{
+      ch.onclick=()=>{ placeInNextSlot(st,item,ch.dataset.w); };
+    });
+  }
+
+  document.querySelectorAll(".pip").forEach(p=>p.onclick=()=>{cur.q=+p.dataset.q;render();});
+  $("#prev").onclick=goPrev; $("#next").onclick=goNext;
+  $("#prev").disabled=(cur.p===0&&cur.q===0);
+  const cb=$("#clearBtn"); if(cb) cb.onclick=()=>{st.built=[];st.slots=[];st.val=[];st.result=null;render();};
+  const chk=$("#check"); if(chk) chk.onclick=check;
+  const sb=$("#sampleBtn"); if(sb) sb.onclick=()=>{st.revealed=!st.revealed;render();};
+  $("#hintBtn").onclick=()=>{
+    const hb=$("#hb"); const h=item.hint||part.hint||"You've got this!";
+    hb.innerHTML=`<b>💡 Hint:</b> ${h}`; hb.classList.toggle("show");
+  };
+
+  if(st.result && part.type!=="speak") showFeedback(part,item,st);
+  updateScores();
+}
+
+function renderBody(part,item,st,col){
+  const b=$("#qbody");
+
+  if(part.type==="bank"){
+    const [pre,post]=item.text.split("___");
+    b.innerHTML=`<div class="sentence">${pre}<span class="blank" style="min-width:160px">${st.picked||'?'}</span>${post||''}</div>`;
+  }
+
+  else if(part.type==="tiles"){
+    const orig=item.tiles.split(/\s+/);
+    // shuffle once per item; make sure the shuffled order does NOT spell the answer
+    if(!st.tileOrder){
+      const target=norm(item.answer);
+      let arr;
+      for(let tries=0;tries<50;tries++){
+        arr=orig.map((l,i)=>i).sort(()=>Math.random()-0.5);
+        const spelled=arr.map(i=>orig[i]).join("").toLowerCase();
+        if(spelled!==target){ break; }
+      }
+      st.tileOrder=arr;
+    }
+    const tiles=st.tileOrder.map(i=>orig[i]);
+    const built=st.built||[];
+    const usedIdx=[];
+    built.forEach(u=>{ if(u.idx!=null) usedIdx.push(u.idx); });
+    const [pre,post]=item.text.split("___");
+    b.innerHTML=`
+      <div class="traylabel">Letters</div>
+      <div class="tiletray">${tiles.map((l,i)=>`
+        <div class="tile${usedIdx.includes(i)?' used':''}" data-i="${i}" data-l="${l}">${l}</div>`).join("")}</div>
+      <div class="buildstrip" id="build">
+        ${built.length? built.map((u,bi)=>`<div class="built" data-bi="${bi}">${u.l}</div>`).join("")
+          : '<span class="placeholder">Tap letters to build the word…</span>'}
+      </div>
+      <div class="sentence" style="margin-top:14px">${pre}<span class="blank ${st.result==='correct'?'ok':st.result==='wrong'?'no':''}" style="min-width:120px">${built.map(u=>u.l).join('')||'?'}</span>${post||''}</div>`;
+    b.querySelectorAll(".tile").forEach(t=>t.onclick=()=>{
+      st.built=[...built,{l:t.dataset.l,idx:+t.dataset.i}]; st.result=null; render();
+    });
+    b.querySelectorAll(".built").forEach(x=>x.onclick=()=>{
+      const arr=[...built]; arr.splice(+x.dataset.bi,1); st.built=arr; st.result=null; render();
+    });
+  }
+
+  else if(part.type==="slots"){
+    const segs=item.text.split("___");
+    let html='<div class="sentence">';
+    segs.forEach((seg,i)=>{
+      html+=seg;
+      if(i<segs.length-1){
+        const v=st.slots[i];
+        const cls=st.result==='correct'?'ok':st.result==='wrong'?'no':'';
+        html+=`<span class="slot ${v?'':'empty'} ${cls}" data-i="${i}">${v||'____'}</span>`;
+      }
+    });
+    html+='</div>';
+    b.innerHTML=html;
+    b.querySelectorAll(".slot").forEach(s=>s.onclick=()=>{
+      const i=+s.dataset.i; if(st.slots[i]){ st.slots[i]=null; st.result=null; render(); }
+    });
+  }
+
+  else if(part.type==="blank"){
+    const segs=item.text.split("___");
+    let html='<div class="sentence">';
+    segs.forEach((seg,i)=>{ html+=seg;
+      if(i<segs.length-1) html+=`<input class="blank" id="in${i}" autocomplete="off" value="${st.val[i]||''}" placeholder="?">`;
+    });
+    html+='</div>';
+    if(item.cue) html+=`<div class="cue">Verb: <b>${item.cue}</b></div>`;
+    b.innerHTML=html;
+    for(let i=0;i<item.answers.length;i++){
+      const el=$("#in"+i); if(!el)continue;
+      el.oninput=()=>{st.val[i]=el.value;st.result=null;$("#fb").classList.remove("show");el.classList.remove("ok","no");};
+      el.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();check();}};
+    }
+  }
+
+  else if(part.type==="choice"){
+    // shuffle display order once per item so the correct answer isn't always in the same slot
+    if(!st.order){ st.order=item.options.map((_,i)=>i).sort(()=>Math.random()-0.5); }
+    const ord=st.order;
+    b.innerHTML=`<div class="sentence">${item.text}</div>
+      <div class="choices">${ord.map((origIdx,pos)=>`
+        <button class="choice${st.picked===origIdx?' sel':''}" data-i="${origIdx}">
+          <span class="key">${pos===0?'A':'B'}</span><span>${item.options[origIdx]}</span></button>`).join("")}</div>`;
+    b.querySelectorAll(".choice").forEach(ch=>ch.onclick=()=>{
+      st.picked=+ch.dataset.i; st.result=null; $("#fb").classList.remove("show");
+      b.querySelectorAll(".choice").forEach(x=>x.classList.remove("sel")); ch.classList.add("sel");
+    });
+  }
+
+  else if(part.type==="match"){
+    renderMatch(part,item,st);
+  }
+
+  else if(part.type==="speak"){
+    renderSpeak(item,st);
+  }
+}
+
+/* ---- slots helper ---- */
+function placeInNextSlot(st,item,word){
+  const n=item.answers.length;
+  if(!st.slots.length) st.slots=new Array(n).fill(null);
+  const empty=st.slots.findIndex(x=>!x);
+  if(empty===-1) return;
+  st.slots[empty]=word; st.result=null; render();
+}
+
+/* ---- matching (two-column click-to-pair) ---- */
+let matchSel=null;   // {side, id, el}
+function renderMatch(part,item,st){
+  if(!st._left){
+    st._left=item.pairs.map((p,i)=>({t:p[0],id:i})).sort(()=>Math.random()-0.5);
+    st._right=item.pairs.map((p,i)=>({t:p[1],id:i})).sort(()=>Math.random()-0.5);
+    st.matched=[];
+    st.colorOf={};                 // id -> color index, assigned as matched
+  }
+  const b=$("#qbody");
+  const n=item.pairs.length, done=st.matched.length;
+
+  const colOf=id=>st.colorOf[id]!=null?` matched c${st.colorOf[id]}`:'';
+  const leftHTML=st._left.map(x=>`
+    <button class="mcard${colOf(x.id)}${matchSel&&matchSel.side==='L'&&matchSel.id===x.id?' sel':''}"
+      data-side="L" data-id="${x.id}" ${st.matched.includes(x.id)?'disabled':''}>${x.t}</button>`).join("");
+  const rightHTML=st._right.map(x=>`
+    <button class="mcard${colOf(x.id)}${matchSel&&matchSel.side==='R'&&matchSel.id===x.id?' sel':''}"
+      data-side="R" data-id="${x.id}" ${st.matched.includes(x.id)?'disabled':''}>${x.t}</button>`).join("");
+
+  b.innerHTML=`<div class="match-wrap">
+    <div class="match-progress">Matched ${done} / ${n}
+      <div class="bar"><span style="width:${done/n*100}%"></span></div></div>
+    <p class="match-help">Tap a word on the left, then its partner on the right.</p>
+    <div class="match2">
+      <div class="mcol">
+        <div class="mcol-head act">Action</div>
+        ${leftHTML}
+      </div>
+      <div class="mcol">
+        <div class="mcol-head end">Ending</div>
+        ${rightHTML}
+      </div>
+    </div>
+  </div>`;
+
+  b.querySelectorAll(".mcard").forEach(btn=>{
+    if(btn.disabled)return;
+    btn.onclick=()=>{
+      const side=btn.dataset.side, id=+btn.dataset.id;
+      if(!matchSel){ matchSel={side,id,el:btn}; btn.classList.add("sel"); return; }
+      if(matchSel.side===side){ matchSel.el.classList.remove("sel"); matchSel={side,id,el:btn}; btn.classList.add("sel"); return; }
+      if(matchSel.id===id){
+        st.colorOf[id]=done % 6;      // give each matched pair a color
+        st.matched.push(id); matchSel=null;
+        if(st.matched.length===n){ st.result="correct"; celebrate(); }
+        render(); showFeedbackMaybe();
+      }else{
+        btn.classList.add("wrongflash"); const prev=matchSel.el; prev.classList.add("wrongflash");
+        setTimeout(()=>{btn.classList.remove("wrongflash","sel");prev.classList.remove("wrongflash","sel");},350);
+        matchSel=null;
+      }
+    };
+  });
+}
+function showFeedbackMaybe(){
+  const st=state[cur.p][cur.q];
+  if(st.result==="correct"){ const fb=$("#fb"); fb.className="feedback show good"; fb.innerHTML="🎉 All matched! Great memory!"; refreshTabDone(); updateScores(); }
+}
+
+/* ---- speaking ---- */
+/* normalize ideas: allow plain strings OR {label,use} objects */
+function ideaLabel(x){ return typeof x==="string"?x:x.label; }
+function ideaUse(x){ return typeof x==="string"?x:x.use; }
+
+function renderSpeak(item,st){
+  const b=$("#qbody");
+  const segs=item.parts;                 // sentence split into text segments
+  const blanks=segs.length-1;            // blanks sit between segments
+  if(!Array.isArray(st.ideasOn)) st.ideasOn=[];
+  if(st.activeBlank==null) st.activeBlank=0;   // which blank we're filling
+
+  // build the sentence with clickable blanks
+  let frame='';
+  segs.forEach((seg,i)=>{
+    frame+=seg;
+    if(i<blanks){
+      const val=st.ideasOn[i];
+      const active=(st.activeBlank===i);
+      frame+=`<span class="fill ${val?'filled':''} ${active?'active':''}" data-i="${i}">${val||'____'}</span>`;
+    }
+  });
+
+  // idea chips for the ACTIVE blank only
+  const bl=item.blanks[st.activeBlank];
+  const chips=bl.ideas.map((w,idx)=>{
+    const on=(st.ideasOn[st.activeBlank]===w);
+    return `<button class="idea${on?' on':''}" data-w="${w}">${w}</button>`;
+  }).join("");
+
+  b.innerHTML=`
+    <div class="sp-q">🗣️ ${item.q}</div>
+    <div class="sp-frame" id="frame">${frame}</div>
+    <div class="idea-label">💡 Ideas for blank ${st.activeBlank+1} <span class="blank-role">(${bl.label})</span> — tap one</div>
+    <div class="ideas">${chips}</div>
+    <div class="sp-sample ${st.revealed?'show':''}">✅ Sample answer: ${item.sample}</div>
+    <div class="sp-tip">Tap a <b>blank</b> in the sentence to choose it, then tap an idea. Read the whole sentence out loud!</div>`;
+
+  // click a blank -> make it active (and clear it if it was filled)
+  b.querySelectorAll(".fill").forEach(f=>f.onclick=()=>{
+    const i=+f.dataset.i;
+    if(st.ideasOn[i]){ st.ideasOn[i]=null; }   // tap a filled blank to empty it
+    st.activeBlank=i; render();
+  });
+
+  // click an idea -> fill active blank, auto-advance to next empty blank
+  b.querySelectorAll(".idea").forEach(btn=>btn.onclick=()=>{
+    const w=btn.dataset.w;
+    if(st.ideasOn[st.activeBlank]===w){ st.ideasOn[st.activeBlank]=null; render(); return; }
+    st.ideasOn[st.activeBlank]=w;
+    // move to next empty blank
+    let nxt=-1;
+    for(let i=0;i<blanks;i++){ if(!st.ideasOn[i]){ nxt=i; break; } }
+    if(nxt>-1) st.activeBlank=nxt;
+    render();
+  });
+}
+
+/* ---- check ---- */
+function check(){
+  const part=DATA[cur.p], item=part.items[cur.q], st=state[cur.p][cur.q];
+  let ok=false;
+
+  if(part.type==="bank"){ ok=norm(st.picked)===norm(item.answer); }
+  else if(part.type==="tiles"){ ok=norm((st.built||[]).map(u=>u.l).join(""))===norm(item.answer); }
+  else if(part.type==="slots"){
+    ok = item.answers.every((a,i)=>norm(st.slots[i])===norm(a));
+  }
+  else if(part.type==="choice"){
+    ok=st.picked===item.answer;
+    document.querySelectorAll(".choice").forEach(ch=>{
+      const oi=+ch.dataset.i;
+      ch.classList.remove("sel","ok","no");
+      if(oi===item.answer)ch.classList.add("ok");
+      if(st.picked===oi&&!ok)ch.classList.add("no");
+    });
+  }
+  else if(part.type==="blank"){
+    ok=true; item.answers.forEach((a,i)=>{
+      const g=norm(st.val[i])===norm(a); if(!g)ok=false;
+      const el=$("#in"+i); if(el){el.classList.remove("ok","no");el.classList.add(g?"ok":"no");}
+    });
+  }
+
+  st.result=ok?"correct":"wrong";
+  render();
+  showFeedback(part,item,st);
+  if(ok)celebrate();
+  refreshTabDone(); updateScores();
+}
+
+function showFeedback(part,item,st){
+  const fb=$("#fb"); if(!fb)return;
+  if(st.result==="correct"){ fb.className="feedback show good"; fb.innerHTML="🎉 Great job! That's correct!"; return; }
+  let ans="";
+  if(part.type==="bank")ans=item.answer;
+  else if(part.type==="tiles")ans=item.answer;
+  else if(part.type==="slots")ans=item.answers.join("  +  ");
+  else if(part.type==="choice"){
+    const pos=(st.order?st.order.indexOf(item.answer):item.answer);
+    ans=(pos===0?'A. ':'B. ')+item.options[item.answer];
+  }
+  else if(part.type==="blank")ans=item.answers.join("  +  ");
+  fb.className="feedback show bad";
+  fb.innerHTML=`Try again! <span class="ans">Answer: ${ans}</span>`;
+}
+
+/* ---- nav ---- */
+function goPrev(){ if(cur.q>0)cur.q--; else if(cur.p>0){cur.p--;cur.q=DATA[cur.p].items.length-1;} matchSel=null; render(); }
+function goNext(){ const p=DATA[cur.p];
+  if(cur.q<p.items.length-1)cur.q++; else if(cur.p<DATA.length-1){cur.p++;cur.q=0;} matchSel=null; render(); }
+
+/* ---- scores ---- */
+function updateScores(){
+  let total=0;
+  state.forEach((p,pi)=>{
+    if(DATA[pi].type==="match"){ if(p[0].result==="correct")total++; }
+    else if(DATA[pi].type==="speak"){ /* not scored */ }
+    else p.forEach(s=>{if(s.result==="correct")total++;});
+  });
+  $("#score").querySelector("span").textContent=total;
+  const part=DATA[cur.p], pst=state[cur.p];
+  if(part.type==="speak"){ $("#partScore").textContent=`Part ${part.n}: Speaking practice — say it out loud! 🗣️`; }
+  else if(part.type==="match"){ $("#partScore").textContent=`Part ${part.n}: ${pst[0].result==="correct"?"All matched ✅":"Match the pairs"}`; }
+  else{ const d=pst.filter(s=>s.result==="correct").length; $("#partScore").textContent=`Part ${part.n}: ${d} / ${pst.length} correct`; }
+}
+
+/* ---- confetti ---- */
+function celebrate(){
+  const cols=["#7c4dff","#22b8ff","#20cf9a","#ffce3a","#ff6b6b","#ff6fae","#12b5b0"];
+  for(let i=0;i<26;i++){
+    const c=document.createElement("div"); c.className="confetti";
+    c.style.left=Math.random()*100+"vw"; c.style.background=cols[i%cols.length];
+    c.style.transform=`rotate(${Math.random()*360}deg)`; document.body.appendChild(c);
+    const d=1200+Math.random()*900;
+    c.animate([{top:"-20px",opacity:1},{top:"100vh",opacity:.9}],{duration:d,easing:"cubic-bezier(.4,.1,.6,1)"});
+    setTimeout(()=>c.remove(),d);
+  }
+}
+
+render();
+</script>
+</body>
+</html>
